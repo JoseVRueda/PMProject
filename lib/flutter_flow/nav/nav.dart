@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/backend/schema/structs/index.dart';
-
 import '/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -41,7 +39,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'USPage',
           path: '/usPage',
-          builder: (context, params) => const USPageWidget(),
+          builder: (context, params) => USPageWidget(
+            name: params.getParam(
+              'name',
+              ParamType.String,
+            ),
+            id: params.getParam(
+              'id',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: 'Login',
@@ -54,24 +61,88 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const UCPageWidget(),
         ),
         FFRoute(
-          name: 'AdminUS',
-          path: '/adminUS',
-          builder: (context, params) => const AdminUSWidget(),
+          name: 'USAdmin',
+          path: '/uSAdmin',
+          builder: (context, params) => const USAdminWidget(),
         ),
         FFRoute(
-          name: 'AdminCliente',
-          path: '/adminCliente',
-          builder: (context, params) => const AdminClienteWidget(),
+          name: 'ClientAdmin',
+          path: '/clientAdmin',
+          builder: (context, params) => const ClientAdminWidget(),
         ),
         FFRoute(
-          name: 'AdminReportes',
-          path: '/adminReportes',
-          builder: (context, params) => const AdminReportesWidget(),
+          name: 'ReportAdmin',
+          path: '/reportAdmin',
+          builder: (context, params) => const ReportAdminWidget(),
         ),
         FFRoute(
-          name: 'ReporteCliente',
-          path: '/reporteCliente',
-          builder: (context, params) => const ReporteClienteWidget(),
+          name: 'CreateReport',
+          path: '/createReport',
+          builder: (context, params) => CreateReportWidget(
+            usid: params.getParam(
+              'usid',
+              ParamType.int,
+            ),
+            usname: params.getParam(
+              'usname',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'EditUS',
+          path: '/editUS',
+          builder: (context, params) => EditUSWidget(
+            id: params.getParam(
+              'id',
+              ParamType.int,
+            ),
+            name: params.getParam(
+              'name',
+              ParamType.String,
+            ),
+            email: params.getParam(
+              'email',
+              ParamType.String,
+            ),
+            password: params.getParam(
+              'password',
+              ParamType.String,
+            ),
+            usid: params.getParam(
+              'usid',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'EditClient',
+          path: '/editClient',
+          builder: (context, params) => EditClientWidget(
+            id: params.getParam(
+              'id',
+              ParamType.int,
+            ),
+            name: params.getParam(
+              'name',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'RateReport',
+          path: '/rateReport',
+          builder: (context, params) => RateReportWidget(
+            id: params.getParam(
+              'id',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'CreateUS',
+          path: '/createUS',
+          builder: (context, params) => const CreateUSWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -120,7 +191,7 @@ class FFParameters {
   // present is the special extra parameter reserved for the transition info.
   bool get isEmpty =>
       state.allParams.isEmpty ||
-      (state.extraMap.length == 1 &&
+      (state.allParams.length == 1 &&
           state.extraMap.containsKey(kTransitionInfoKey));
   bool isAsyncParam(MapEntry<String, dynamic> param) =>
       asyncParams.containsKey(param.key) && param.value is String;
@@ -141,10 +212,9 @@ class FFParameters {
 
   dynamic getParam<T>(
     String paramName,
-    ParamType type, [
+    ParamType type, {
     bool isList = false,
-    StructBuilder<T>? structBuilder,
-  ]) {
+  }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
     }
@@ -161,7 +231,6 @@ class FFParameters {
       param,
       type,
       isList,
-      structBuilder: structBuilder,
     );
   }
 }
@@ -237,7 +306,11 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => const TransitionInfo(
+        hasTransition: true,
+        transitionType: PageTransitionType.leftToRight,
+        duration: Duration(milliseconds: 300),
+      );
 }
 
 class RootPageContext {
@@ -258,4 +331,14 @@ class RootPageContext {
         value: RootPageContext(true, errorRoute),
         child: child,
       );
+}
+
+extension GoRouterLocationExtension on GoRouter {
+  String getCurrentLocation() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    return matchList.uri.toString();
+  }
 }
