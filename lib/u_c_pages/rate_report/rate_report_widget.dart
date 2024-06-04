@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'rate_report_model.dart';
@@ -149,7 +150,7 @@ class _RateReportWidgetState extends State<RateReportWidget> {
                             ),
                             Text(
                               ReportesGroup.getReportesFilterCall
-                                  .id(
+                                  .clientid(
                                     rateReportGetReportesFilterResponse
                                         .jsonBody,
                                   )
@@ -179,7 +180,7 @@ class _RateReportWidgetState extends State<RateReportWidget> {
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 30.0, 0.0, 5.0),
                               child: Text(
-                                'Datos del Cliente',
+                                'Datos del US',
                                 style: FlutterFlowTheme.of(context)
                                     .titleLarge
                                     .override(
@@ -311,10 +312,11 @@ class _RateReportWidgetState extends State<RateReportWidget> {
                                             text: valueOrDefault<String>(
                                               ReportesGroup
                                                   .getReportesFilterCall
-                                                  .starttime(
-                                                rateReportGetReportesFilterResponse
-                                                    .jsonBody,
-                                              ),
+                                                  .duration(
+                                                    rateReportGetReportesFilterResponse
+                                                        .jsonBody,
+                                                  )
+                                                  ?.toString(),
                                               'a',
                                             ),
                                             style: const TextStyle(),
@@ -427,25 +429,119 @@ class _RateReportWidgetState extends State<RateReportWidget> {
                                     ),
                                   );
                                   if ((_model.putReportes?.succeeded ?? true)) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (alertDialogContext) {
-                                        return AlertDialog(
-                                          title: const Text('Calificado'),
-                                          content: const Text(
-                                              'Reporte calificado exitosamente'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  alertDialogContext),
-                                              child: const Text('Ok'),
-                                            ),
-                                          ],
-                                        );
-                                      },
+                                    _model.getUsuariosSoporteNameFilter =
+                                        await UsuarioSoporteGroup
+                                            .getUsuariosSoporteNameFilterCall
+                                            .call(
+                                      name: ReportesGroup.getReportesFilterCall
+                                          .usname(
+                                        rateReportGetReportesFilterResponse
+                                            .jsonBody,
+                                      ),
                                     );
+                                    _model.putUsuariosSoporte =
+                                        await UsuarioSoporteGroup
+                                            .putUsuariosSoporteCall
+                                            .call(
+                                      id: ReportesGroup.getReportesFilterCall
+                                          .usid(
+                                        rateReportGetReportesFilterResponse
+                                            .jsonBody,
+                                      ),
+                                      name: ReportesGroup.getReportesFilterCall
+                                          .usname(
+                                        rateReportGetReportesFilterResponse
+                                            .jsonBody,
+                                      ),
+                                      email: UsuarioSoporteGroup
+                                          .getUsuariosSoporteNameFilterCall
+                                          .email(
+                                        (_model.getUsuariosSoporteNameFilter
+                                                ?.jsonBody ??
+                                            ''),
+                                      ),
+                                      password: UsuarioSoporteGroup
+                                          .getUsuariosSoporteNameFilterCall
+                                          .password(
+                                        (_model.getUsuariosSoporteNameFilter
+                                                ?.jsonBody ??
+                                            ''),
+                                      ),
+                                      usId: ReportesGroup.getReportesFilterCall
+                                          .usid(
+                                        rateReportGetReportesFilterResponse
+                                            .jsonBody,
+                                      ),
+                                      rating: UsuarioSoporteGroup
+                                                  .getUsuariosSoporteNameFilterCall
+                                                  .numreports(
+                                                (_model.getUsuariosSoporteNameFilter
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              ) ==
+                                              1
+                                          ? _model.ratingBarValue
+                                          : functions.ratingAvg(
+                                              UsuarioSoporteGroup
+                                                  .getUsuariosSoporteNameFilterCall
+                                                  .rating(
+                                                (_model.getUsuariosSoporteNameFilter
+                                                        ?.jsonBody ??
+                                                    ''),
+                                              )!,
+                                              _model.ratingBarValue!),
+                                      numReports: functions.reportCounter(
+                                          UsuarioSoporteGroup
+                                              .getUsuariosSoporteNameFilterCall
+                                              .numreports(
+                                        (_model.getUsuariosSoporteNameFilter
+                                                ?.jsonBody ??
+                                            ''),
+                                      )!),
+                                    );
+                                    if ((_model.putUsuariosSoporte?.succeeded ??
+                                        true)) {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('Calificado'),
+                                            content: const Text(
+                                                'Reporte calificado exitosamente'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: const Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
 
-                                    context.pushNamed('ReportAdmin');
+                                      context.pushNamed('ReportAdmin');
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            (_model.putReportes?.statusCode ??
+                                                    200)
+                                                .toString(),
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .error,
+                                        ),
+                                      );
+                                    }
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

@@ -73,7 +73,7 @@ class _ReportAdminWidgetState extends State<ReportAdminWidget> {
                 size: 24.0,
               ),
               onPressed: () async {
-                context.pop();
+                context.pushNamed('UCPage');
               },
             ),
             title: Text(

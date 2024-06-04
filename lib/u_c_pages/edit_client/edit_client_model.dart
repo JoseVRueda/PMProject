@@ -41,6 +41,8 @@ class EditClientModel extends FlutterFlowModel<EditClientWidget> {
 
   // Stores action output result for [Backend Call - API (PutClientes)] action in SubmitButton widget.
   ApiCallResponse? putClientes;
+  // Stores action output result for [Backend Call - API (DeleteClientes)] action in SubmitButton widget.
+  ApiCallResponse? deleteUsuariosSoporte;
 
   @override
   void initState(BuildContext context) {

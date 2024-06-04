@@ -11,12 +11,14 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start UsuarioSoporte Group Code
 
 class UsuarioSoporteGroup {
-  static String getBaseUrl() => 'https://retoolapi.dev/bmUKzA';
+  static String getBaseUrl() => 'https://retoolapi.dev/9KIjlR';
   static Map<String, String> headers = {};
   static GetUsuariosSoporteCall getUsuariosSoporteCall =
       GetUsuariosSoporteCall();
   static GetUsuariosSoporteFilterCall getUsuariosSoporteFilterCall =
       GetUsuariosSoporteFilterCall();
+  static GetUsuariosSoporteNameFilterCall getUsuariosSoporteNameFilterCall =
+      GetUsuariosSoporteNameFilterCall();
   static PutUsuariosSoporteCall putUsuariosSoporteCall =
       PutUsuariosSoporteCall();
   static CreateUsuariosSoporteCall createUsuariosSoporteCall =
@@ -70,18 +72,36 @@ class GetUsuariosSoporteCall {
           .map((x) => castToType<String>(x))
           .withoutNulls
           .toList();
-  List<int>? password(dynamic response) => (getJsonField(
+  List<String>? password(dynamic response) => (getJsonField(
         response,
         r'''$[:].password''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<String>(x))
+          .withoutNulls
+          .toList();
+  List<int>? usid(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].us_id''',
         true,
       ) as List?)
           ?.withoutNulls
           .map((x) => castToType<int>(x))
           .withoutNulls
           .toList();
-  List<int>? usid(dynamic response) => (getJsonField(
+  List<double>? rating(dynamic response) => (getJsonField(
         response,
-        r'''$[:].us_id''',
+        r'''$[:].rating''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<double>(x))
+          .withoutNulls
+          .toList();
+  List<int>? numreports(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].num_reports''',
         true,
       ) as List?)
           ?.withoutNulls
@@ -126,6 +146,58 @@ class GetUsuariosSoporteFilterCall {
       ));
 }
 
+class GetUsuariosSoporteNameFilterCall {
+  Future<ApiCallResponse> call({
+    String? name = '',
+  }) async {
+    final baseUrl = UsuarioSoporteGroup.getBaseUrl();
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetUsuariosSoporteNameFilter',
+      apiUrl: '$baseUrl/usuario_soporte',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {
+        'name': name,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  String? email(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$[:].email''',
+      ));
+  int? usid(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$[:].us_id''',
+      ));
+  String? name(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$[:].name''',
+      ));
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$[:].id''',
+      ));
+  double? rating(dynamic response) => castToType<double>(getJsonField(
+        response,
+        r'''$[:].rating''',
+      ));
+  String? password(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$[:].password''',
+      ));
+  int? numreports(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$[:].num_reports''',
+      ));
+}
+
 class PutUsuariosSoporteCall {
   Future<ApiCallResponse> call({
     int? id,
@@ -133,6 +205,8 @@ class PutUsuariosSoporteCall {
     String? email = '',
     String? password = '',
     int? usId,
+    double? rating,
+    int? numReports,
   }) async {
     final baseUrl = UsuarioSoporteGroup.getBaseUrl();
 
@@ -142,7 +216,9 @@ class PutUsuariosSoporteCall {
   "name": "$name",
   "email": "$email",
   "password": "$password",
-  "us_id": $usId
+  "us_id": $usId,
+  "rating": $rating,
+  "num_reports": $numReports
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'PutUsuariosSoporte',
@@ -168,6 +244,8 @@ class CreateUsuariosSoporteCall {
     String? email = '',
     String? password = '',
     int? usId,
+    double? rating,
+    int? numReports,
   }) async {
     final baseUrl = UsuarioSoporteGroup.getBaseUrl();
 
@@ -177,7 +255,9 @@ class CreateUsuariosSoporteCall {
   "name": "$name",
   "email": "$email",
   "password": "$password",
-  "us_id": $usId
+  "us_id": $usId,
+  "rating": $rating,
+  "num_reports": $numReports
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'CreateUsuariosSoporte',
@@ -227,6 +307,7 @@ class ClienteGroup {
   static GetClientesCall getClientesCall = GetClientesCall();
   static PutClientesCall putClientesCall = PutClientesCall();
   static CreateClientesCall createClientesCall = CreateClientesCall();
+  static DeleteClientesCall deleteClientesCall = DeleteClientesCall();
 }
 
 class GetClientesCall {
@@ -333,6 +414,27 @@ class CreateClientesCall {
   }
 }
 
+class DeleteClientesCall {
+  Future<ApiCallResponse> call({
+    int? id,
+  }) async {
+    final baseUrl = ClienteGroup.getBaseUrl();
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'DeleteClientes',
+      apiUrl: '$baseUrl/cliente/$id',
+      callType: ApiCallType.DELETE,
+      headers: {},
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 /// End Cliente Group Code
 
 /// Start Reportes Group Code
@@ -342,8 +444,11 @@ class ReportesGroup {
   static Map<String, String> headers = {};
   static GetReportesCall getReportesCall = GetReportesCall();
   static GetReportesFilterCall getReportesFilterCall = GetReportesFilterCall();
+  static GetReportesNameFilterCall getReportesNameFilterCall =
+      GetReportesNameFilterCall();
   static PutReportesCall putReportesCall = PutReportesCall();
   static CreateReportesCall createReportesCall = CreateReportesCall();
+  static DeleteReportesCall deleteReportesCall = DeleteReportesCall();
 }
 
 class GetReportesCall {
@@ -418,6 +523,70 @@ class GetReportesFilterCall {
       callType: ApiCallType.GET,
       headers: {},
       params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id''',
+      ));
+  int? rate(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.rate''',
+      ));
+  int? usid(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id_us''',
+      ));
+  String? usname(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.name_us''',
+      ));
+  int? duration(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.duration''',
+      ));
+  int? clientid(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id_cliente''',
+      ));
+  int? reportid(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id_reporte''',
+      ));
+  String? starttime(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.start_time''',
+      ));
+  String? description(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.description''',
+      ));
+  String? clientname(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.name_cliente''',
+      ));
+}
+
+class GetReportesNameFilterCall {
+  Future<ApiCallResponse> call({
+    String? nameUs = '',
+  }) async {
+    final baseUrl = ReportesGroup.getBaseUrl();
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'GetReportesNameFilter',
+      apiUrl: '$baseUrl/reporte',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {
+        'name_us': nameUs,
+      },
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -549,6 +718,27 @@ class CreateReportesCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class DeleteReportesCall {
+  Future<ApiCallResponse> call({
+    int? id,
+  }) async {
+    final baseUrl = ReportesGroup.getBaseUrl();
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'DeleteReportes',
+      apiUrl: '$baseUrl/reporte/$id',
+      callType: ApiCallType.DELETE,
+      headers: {},
+      params: {},
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,

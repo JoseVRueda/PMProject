@@ -310,7 +310,77 @@ class _EditClientWidgetState extends State<EditClientWidget> {
                         ),
                       ),
                     ),
-                  ].divide(const SizedBox(height: 20.0)),
+                    FFButtonWidget(
+                      onPressed: () async {
+                        _model.deleteUsuariosSoporte =
+                            await ClienteGroup.deleteClientesCall.call(
+                          id: widget.id,
+                        );
+                        if ((_model.deleteUsuariosSoporte?.succeeded ?? true)) {
+                          await showDialog(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: const Text('Eliminado'),
+                                content:
+                                    const Text('El cliente se eliminó exitosamete'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          context.pushNamed('ClientAdmin');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                (_model.deleteUsuariosSoporte?.statusCode ??
+                                        200)
+                                    .toString(),
+                                style: TextStyle(
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryText,
+                                ),
+                              ),
+                              duration: const Duration(milliseconds: 4000),
+                              backgroundColor:
+                                  FlutterFlowTheme.of(context).error,
+                            ),
+                          );
+                        }
+
+                        setState(() {});
+                      },
+                      text: 'Eliminar',
+                      options: FFButtonOptions(
+                        width: 200.0,
+                        height: 40.0,
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 0.0, 24.0, 0.0),
+                        iconPadding:
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        color: FlutterFlowTheme.of(context).error,
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Readex Pro',
+                                  color: Colors.white,
+                                  letterSpacing: 0.0,
+                                ),
+                        elevation: 3.0,
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                    ),
+                  ].divide(const SizedBox(height: 15.0)),
                 ),
               ),
             ),
