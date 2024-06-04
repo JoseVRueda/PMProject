@@ -387,6 +387,8 @@ class _CreateUSWidgetState extends State<CreateUSWidget> {
                             email: _model.emailTextController.text,
                             password: _model.passwordTextController.text,
                             usId: int.tryParse(_model.idTextController.text),
+                            rating: 0.0,
+                            numReports: 0,
                           );
                           if ((_model.createUsuarioSoporte?.succeeded ??
                               true)) {

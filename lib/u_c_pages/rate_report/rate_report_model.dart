@@ -10,6 +10,10 @@ class RateReportModel extends FlutterFlowModel<RateReportWidget> {
   final formKey = GlobalKey<FormState>();
   // Stores action output result for [Backend Call - API (PutReportes)] action in SubmitButton widget.
   ApiCallResponse? putReportes;
+  // Stores action output result for [Backend Call - API (GetUsuariosSoporteNameFilter)] action in SubmitButton widget.
+  ApiCallResponse? getUsuariosSoporteNameFilter;
+  // Stores action output result for [Backend Call - API (PutUsuariosSoporte)] action in SubmitButton widget.
+  ApiCallResponse? putUsuariosSoporte;
   // State field(s) for RatingBar widget.
   double? ratingBarValue;
 

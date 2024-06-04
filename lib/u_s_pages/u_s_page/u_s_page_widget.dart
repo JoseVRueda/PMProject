@@ -1,8 +1,10 @@
 import '/backend/api_requests/api_calls.dart';
+import '/components/empty_list/empty_list_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'u_s_page_model.dart';
 export 'u_s_page_model.dart';
 
@@ -43,7 +45,9 @@ class _USPageWidgetState extends State<USPageWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ApiCallResponse>(
-      future: ReportesGroup.getReportesCall.call(),
+      future: ReportesGroup.getReportesNameFilterCall.call(
+        nameUs: widget.name,
+      ),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -62,7 +66,7 @@ class _USPageWidgetState extends State<USPageWidget> {
             ),
           );
         }
-        final uSPageGetReportesResponse = snapshot.data!;
+        final uSPageGetReportesNameFilterResponse = snapshot.data!;
         return GestureDetector(
           onTap: () => _model.unfocusNode.canRequestFocus
               ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -128,21 +132,32 @@ class _USPageWidgetState extends State<USPageWidget> {
                           ),
                     ),
                   ),
-                  Align(
-                    alignment: const AlignmentDirectional(0.0, 0.0),
-                    child: FlutterFlowIconButton(
-                      borderRadius: 50.0,
-                      borderWidth: 0.0,
-                      buttonSize: 60.0,
-                      icon: Icon(
-                        Icons.logout_rounded,
-                        color: FlutterFlowTheme.of(context).info,
-                        size: 24.0,
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      FlutterFlowIconButton(
+                        buttonSize: 40.0,
+                        icon: Icon(
+                          Icons.refresh_rounded,
+                          color: FlutterFlowTheme.of(context).info,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          print('Refresh pressed ...');
+                        },
                       ),
-                      onPressed: () async {
-                        context.pushNamed('Login');
-                      },
-                    ),
+                      FlutterFlowIconButton(
+                        buttonSize: 40.0,
+                        icon: Icon(
+                          Icons.logout_rounded,
+                          color: FlutterFlowTheme.of(context).info,
+                          size: 24.0,
+                        ),
+                        onPressed: () async {
+                          context.pushNamed('Login');
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -193,8 +208,14 @@ class _USPageWidgetState extends State<USPageWidget> {
                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 0.0),
                     child: Builder(
                       builder: (context) {
-                        final reportes =
-                            uSPageGetReportesResponse.jsonBody.toList();
+                        final reportes = uSPageGetReportesNameFilterResponse
+                            .jsonBody
+                            .toList();
+                        if (reportes.isEmpty) {
+                          return const Center(
+                            child: EmptyListWidget(),
+                          );
+                        }
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
@@ -360,7 +381,7 @@ class _USPageWidgetState extends State<USPageWidget> {
                                                       ),
                                                 ),
                                               ),
-                                            ],
+                                            ].divide(const SizedBox(height: 5.0)),
                                           ),
                                         ),
                                       ),
@@ -494,7 +515,26 @@ class _USPageWidgetState extends State<USPageWidget> {
                                                       ),
                                                 ),
                                               ),
-                                            ],
+                                              RatingBarIndicator(
+                                                itemBuilder: (context, index) =>
+                                                    Icon(
+                                                  Icons.star_rounded,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .warning,
+                                                ),
+                                                direction: Axis.horizontal,
+                                                rating: getJsonField(
+                                                  reportesItem,
+                                                  r'''$.rate''',
+                                                ),
+                                                unratedColor:
+                                                    FlutterFlowTheme.of(context)
+                                                        .accent3,
+                                                itemCount: 5,
+                                                itemSize: 24.0,
+                                              ),
+                                            ].divide(const SizedBox(height: 5.0)),
                                           ),
                                         ),
                                       ),

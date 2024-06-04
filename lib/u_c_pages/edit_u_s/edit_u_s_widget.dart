@@ -389,6 +389,12 @@ class _EditUSWidgetState extends State<EditUSWidget> {
                               !_model.formKey.currentState!.validate()) {
                             return;
                           }
+                          _model.getUsuariosSoporteNameFilter =
+                              await UsuarioSoporteGroup
+                                  .getUsuariosSoporteNameFilterCall
+                                  .call(
+                            name: widget.name,
+                          );
                           _model.putUsuariosSoporte = await UsuarioSoporteGroup
                               .putUsuariosSoporteCall
                               .call(
@@ -397,6 +403,18 @@ class _EditUSWidgetState extends State<EditUSWidget> {
                             password: _model.passwordTextController.text,
                             id: widget.id,
                             usId: int.tryParse(_model.idTextController.text),
+                            rating: UsuarioSoporteGroup
+                                .getUsuariosSoporteNameFilterCall
+                                .rating(
+                              (_model.getUsuariosSoporteNameFilter?.jsonBody ??
+                                  ''),
+                            ),
+                            numReports: UsuarioSoporteGroup
+                                .getUsuariosSoporteNameFilterCall
+                                .numreports(
+                              (_model.getUsuariosSoporteNameFilter?.jsonBody ??
+                                  ''),
+                            ),
                           );
                           if ((_model.putUsuariosSoporte?.succeeded ?? true)) {
                             await showDialog(

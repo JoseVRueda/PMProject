@@ -55,7 +55,7 @@ class _ClientAdminWidgetState extends State<ClientAdminWidget> {
               size: 24.0,
             ),
             onPressed: () async {
-              context.safePop();
+              context.pushNamed('UCPage');
             },
           ),
           title: Text(
