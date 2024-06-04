@@ -1,4 +1,4 @@
-package com.mycompany.pmproyecto
+package com.uninorte.personalremoto
 
 import io.flutter.embedding.android.FlutterActivity
 
