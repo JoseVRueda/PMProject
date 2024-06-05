@@ -263,8 +263,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   .call(
                             email: _model.emailTextController.text,
                           );
-                          if ((_model.getUsuariosSoporteFilter?.succeeded ??
-                              true)) {
+                          if (_model.emailTextController.text ==
+                              UsuarioSoporteGroup.getUsuariosSoporteFilterCall
+                                  .email(
+                                (_model.getUsuariosSoporteFilter?.jsonBody ??
+                                    ''),
+                              )) {
                             context.pushNamed(
                               'USPage',
                               queryParameters: {
