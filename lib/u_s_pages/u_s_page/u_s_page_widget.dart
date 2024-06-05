@@ -4,7 +4,6 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'u_s_page_model.dart';
 export 'u_s_page_model.dart';
 
@@ -460,6 +459,69 @@ class _USPageWidgetState extends State<USPageWidget> {
                                                   ),
                                                 ),
                                               ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 0.0, 0.0, 4.0),
+                                                child: RichText(
+                                                  textScaler:
+                                                      MediaQuery.of(context)
+                                                          .textScaler,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: 'ID del US: ',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: getJsonField(
+                                                          reportesItem,
+                                                          r'''$.id_us''',
+                                                        ).toString(),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Readex Pro',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryText,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                      )
+                                                    ],
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .labelMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
                                               RichText(
                                                 textScaler:
                                                     MediaQuery.of(context)
@@ -467,7 +529,7 @@ class _USPageWidgetState extends State<USPageWidget> {
                                                 text: TextSpan(
                                                   children: [
                                                     TextSpan(
-                                                      text: 'ID del US: ',
+                                                      text: 'Puntaje: ',
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .titleSmall
@@ -485,7 +547,7 @@ class _USPageWidgetState extends State<USPageWidget> {
                                                     TextSpan(
                                                       text: getJsonField(
                                                         reportesItem,
-                                                        r'''$.id_us''',
+                                                        r'''$.rating''',
                                                       ).toString(),
                                                       style:
                                                           FlutterFlowTheme.of(
@@ -507,32 +569,13 @@ class _USPageWidgetState extends State<USPageWidget> {
                                                   ],
                                                   style: FlutterFlowTheme.of(
                                                           context)
-                                                      .labelMedium
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily:
                                                             'Readex Pro',
                                                         letterSpacing: 0.0,
                                                       ),
                                                 ),
-                                              ),
-                                              RatingBarIndicator(
-                                                itemBuilder: (context, index) =>
-                                                    Icon(
-                                                  Icons.star_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .warning,
-                                                ),
-                                                direction: Axis.horizontal,
-                                                rating: getJsonField(
-                                                  reportesItem,
-                                                  r'''$.rate''',
-                                                ),
-                                                unratedColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .accent3,
-                                                itemCount: 5,
-                                                itemSize: 24.0,
                                               ),
                                             ].divide(const SizedBox(height: 5.0)),
                                           ),
